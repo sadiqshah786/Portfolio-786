@@ -164,6 +164,21 @@ export const projects = [
     live: 'https://anatomia-holla.netlify.app/',
   },
   {
+    slug: 'it-tools',
+    title: 'IT Tools',
+    category: 'Tools',
+    featured: true,
+    thumb: ['#1a2980', '#26d0ce'],
+    desc: 'A handy all-in-one collection of developer tools — converters, formatters, generators and encoders — in one fast, clean web app.',
+    longDesc: [
+      'IT Tools is a fast, offline-friendly collection of everyday utilities for developers — from JSON/YAML converters and formatters to hash, UUID and token generators, encoders/decoders and more.',
+      'Everything lives in one clean, searchable interface so you can grab the right tool instantly without hunting across the web.',
+    ],
+    features: ['Dozens of dev utilities in one place', 'Converters, formatters & generators', 'Encoders / decoders & hashing', 'Fast, searchable, clean UI'],
+    tech: ['Vue.js', 'TypeScript', 'Vite'],
+    live: 'https://it-tools-786.vercel.app/',
+  },
+  {
     slug: 'excalidraw-whiteboard',
     title: 'Excalidraw Whiteboard',
     category: 'Tools',
