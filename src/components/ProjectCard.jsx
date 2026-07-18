@@ -1,16 +1,9 @@
-import { Link } from 'react-router-dom'
 import { Icon } from './Icons'
 
 export default function ProjectCard({ p }) {
   const url = p.live || p.code
-  // Open the live site in a new window without triggering the card's detail link.
-  const openLive = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (url) window.open(url, '_blank', 'noopener,noreferrer')
-  }
   return (
-    <Link to={`/projects/${p.slug}`} className="pcard">
+    <a href={url} target="_blank" rel="noopener noreferrer" className="pcard">
       <div className="pcard-thumb" style={{ background: `linear-gradient(135deg, ${p.thumb[0]}, ${p.thumb[1]})` }}>
         <span className="pcard-cat">{p.category}</span>
         <span className="pcard-mono">{p.title}</span>
@@ -18,9 +11,9 @@ export default function ProjectCard({ p }) {
       <div className="pcard-body">
         <div className="pcard-top">
           <h3>{p.title}</h3>
-          <button className="pcard-ext" onClick={openLive} aria-label={`Open ${p.title} live site`} title="Open live site">
+          <span className="pcard-ext" aria-hidden="true">
             <Icon name="external" size={17} />
-          </button>
+          </span>
         </div>
         <p>{p.desc}</p>
         <div className="ptech">
@@ -29,6 +22,6 @@ export default function ProjectCard({ p }) {
           ))}
         </div>
       </div>
-    </Link>
+    </a>
   )
 }

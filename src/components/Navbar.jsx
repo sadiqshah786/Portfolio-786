@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from './Icons'
+import Brand from './Brand'
 import { profile } from '../data'
 
 // Section anchors (scroll targets on the home page) + a real route for Projects.
@@ -32,7 +33,7 @@ export default function Navbar() {
     <nav>
       <div className="wrap nav-inner">
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
-          <span className="logo pixel">SS</span> Sadiq Shah
+          <Brand />
         </Link>
 
         <div className={`nav-links ${open ? 'open' : ''}`}>
