@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sadiq Shah — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --muted: #5a5a72;
+    --line: #e2e2ec;
+    --accent: #ee4f8b;
+    --accent-2: #7b61ff;
+    --sidebar: #14143a;
+    --sidebar-text: #d8d8ec;
+    --sidebar-muted: #9494bd;
+  }
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important; /* keep backgrounds & colors when printing */
+    print-color-adjust: exact !important;
+  }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: 'Space Grotesk', system-ui, sans-serif; color: var(--ink); background: #ececf2; line-height: 1.5; }
+
+  .toolbar {
+    position: sticky; top: 0; z-index: 10; background: var(--sidebar); color: #fff;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 12px 20px; font-family: 'Space Mono', monospace; font-size: 13px;
+  }
+  .toolbar .actions { display: flex; gap: 10px; }
+  .toolbar button {
+    border: 0; padding: 9px 16px; border-radius: 8px; font-family: 'Space Mono', monospace;
+    font-weight: 700; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+  }
+  .toolbar .btn-dl { background: linear-gradient(100deg, var(--accent), #ff6b45); color: #fff; }
+  .toolbar .btn-print { background: rgba(255,255,255,0.12); color: #fff; }
+  .toolbar button:hover { filter: brightness(1.08); }
+
+  .page {
+    width: 100%; max-width: 210mm; min-height: 297mm; margin: 20px auto; background: #fff;
+    display: grid; grid-template-columns: 34% 1fr; box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  }
+
+  /* Sidebar */
+  aside { background: var(--sidebar); color: var(--sidebar-text); padding: 26px 22px; }
+  .avatar {
+    width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 18px; display: block;
+    object-fit: cover; border: 3px solid rgba(255,255,255,0.15);
+    background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  }
+  aside h1 { font-size: 22px; text-align: center; letter-spacing: -0.5px; }
+  aside .role { text-align: center; color: var(--sidebar-muted); font-family: 'Space Mono', monospace; font-size: 11px; margin-top: 6px; }
+
+  .side-sec { margin-top: 26px; }
+  .side-sec h2 {
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--accent); border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 7px; margin-bottom: 12px;
+  }
+  .side-sec .row { font-size: 12.5px; margin-bottom: 9px; word-break: break-word; }
+  .side-sec .row a { color: var(--sidebar-text); text-decoration: none; }
+  .side-sec .lbl { color: var(--sidebar-muted); font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; display: block; }
+
+  .skill-tag {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+    color: var(--sidebar-text); padding: 4px 9px; border-radius: 5px; margin: 0 5px 6px 0;
+  }
+
+  /* Main */
+  main { padding: 30px 30px 30px 32px; }
+  .m-sec { margin-bottom: 24px; }
+  .m-sec h2 {
+    font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--accent-2); margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  }
+  .m-sec h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .summary { font-size: 13.5px; color: var(--muted); }
+
+  .job { margin-bottom: 16px; position: relative; padding-left: 18px; }
+  .job::before { content: ""; position: absolute; left: 0; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .job::after { content: ""; position: absolute; left: 3.5px; top: 16px; bottom: -12px; width: 1px; background: var(--line); }
+  .job:last-child::after { display: none; }
+  .job .top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .job .title { font-size: 14px; font-weight: 600; }
+  .job .date { font-family: 'Space Mono', monospace; font-size: 10.5px; color: var(--accent); white-space: nowrap; }
+  .job .co { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .job .desc { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+
+  .edu .title { font-size: 13.5px; font-weight: 600; }
+  .edu .sub { font-size: 12px; color: var(--muted); }
+  .edu .date { font-family: 'Space Mono', monospace; font-size: 10.5px; color: var(--accent); }
+  .edu-item { margin-bottom: 12px; }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .page {
+      margin: 0; box-shadow: none; width: 210mm; min-height: 297mm;
+      grid-template-columns: 68mm 1fr; /* force two columns even at A4 width */
+    }
+    @page { size: A4; margin: 0; }
+  }
+  /* Only stack on genuinely tiny screens; keep the two-column CV look otherwise. */
+  @media (max-width: 480px) {
+    .page { grid-template-columns: 1fr; }
+    aside { padding: 22px 18px; }
+    main { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>Sadiq Shah — Curriculum Vitae</span>
+    <div class="actions">
+      <button class="btn-print" onclick="window.print()">🖨 Print</button>
+      <button class="btn-dl" onclick="window.print()">⬇ Download PDF</button>
+    </div>
+  </div>
+
+  <script>
+    // "Download PDF" and "Print" both open the browser print dialog,
+    // where "Save as PDF" downloads the CV. Filename hint below.
+    document.title = 'Sadiq-Shah-CV'
+  </script>
+
+  <div class="page">
+    <aside>
+      <img class="avatar" src="/profile.jpg" alt="Sadiq Shah" />
+      <h1>Sadiq Shah</h1>
+      <div class="role">Software Engineer</div>
+
+      <div class="side-sec">
+        <h2>Contact</h2>
+        <div class="row"><span class="lbl">Location</span>Karachi, Pakistan</div>
+        <div class="row"><span class="lbl">Phone</span><a href="tel:+923076523149">0307 6523149</a></div>
+        <div class="row"><span class="lbl">Email</span><a href="mailto:sadiqshahdev234@gmail.com">sadiqshahdev234@gmail.com</a></div>
+        <div class="row"><span class="lbl">LinkedIn</span><a href="https://www.linkedin.com/in/sadiq-shah-806937166/">/in/sadiq-shah</a></div>
+        <div class="row"><span class="lbl">GitHub</span><a href="https://github.com/sadiqshah786">/sadiqshah786</a></div>
+      </div>
+
+      <div class="side-sec">
+        <h2>Top Skills</h2>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Next.js</span>
+        <span class="skill-tag">Vue.js</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Express</span>
+        <span class="skill-tag">Three.js</span>
+        <span class="skill-tag">WordPress</span>
+        <span class="skill-tag">WooCommerce</span>
+        <span class="skill-tag">Tailwind CSS</span>
+        <span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">Firebase</span>
+        <span class="skill-tag">Git</span>
+      </div>
+
+      <div class="side-sec">
+        <h2>Languages</h2>
+        <div class="row">English — Professional</div>
+        <div class="row">Urdu — Native</div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="m-sec">
+        <h2>Summary</h2>
+        <p class="summary">Meticulous Software Engineer with 3+ years of front-end experience and a passion for responsive, mobile-first design. Skilled across React, Next.js, TypeScript and Node.js, plus WordPress &amp; WooCommerce e-commerce and interactive 3D/WebGL. I enjoy turning complex problems into simple, beautiful and intuitive interfaces.</p>
+      </div>
+
+      <div class="m-sec">
+        <h2>Experience</h2>
+
+        <div class="job">
+          <div class="top"><span class="title">Freelance Full Stack Developer</span><span class="date">2024 — Present</span></div>
+          <div class="desc">Building custom websites, interactive 3D/WebGL experiences and WordPress + WooCommerce e-commerce stores for clients — handling design, development and deployment end to end.</div>
+        </div>
+
+        <div class="job">
+          <div class="top"><span class="title">Senior Software Executive</span><span class="date">Mar 2025 — Apr 2025</span></div>
+          <div class="co">Sofcom × Dax · Karachi</div>
+          <div class="desc">Promoted from React Developer (Jan–Mar 2025); built modern web applications with React, Next.js and TypeScript.</div>
+        </div>
+
+        <div class="job">
+          <div class="top"><span class="title">Instructor</span><span class="date">Dec 2023 — Apr 2025</span></div>
+          <div class="co">Saylani Mass I.T Training (SMIT) · Karachi</div>
+          <div class="desc">Taught and mentored students in web development, guiding them toward successful careers in tech.</div>
+        </div>
+
+        <div class="job">
+          <div class="top"><span class="title">Software Engineer</span><span class="date">Feb 2023 — Dec 2024</span></div>
+          <div class="co">Digital Auxilius · Karachi</div>
+          <div class="desc">Grew from Associate to Software Engineer, delivering responsive, production-grade front-end applications.</div>
+        </div>
+
+        <div class="job">
+          <div class="top"><span class="title">Frontend Developer</span><span class="date">Mar 2022 — Jan 2023</span></div>
+          <div class="co">LearnTech.pk · Karachi</div>
+          <div class="desc">Built and maintained responsive, mobile-first user interfaces for web platforms.</div>
+        </div>
+
+        <div class="job">
+          <div class="top"><span class="title">Frontend Developer</span><span class="date">Dec 2020 — Mar 2022</span></div>
+          <div class="co">Dynamic Global Links</div>
+          <div class="desc">Started my professional journey developing front-end interfaces with a focus on clean, intuitive design.</div>
+        </div>
+      </div>
+
+      <div class="m-sec">
+        <h2>Education</h2>
+        <div class="edu">
+          <div class="edu-item">
+            <div class="title">BS Computer Science</div>
+            <div class="sub">Federal Urdu University of Arts, Science &amp; Technology, Islamabad</div>
+            <div class="date">2016 — 2021</div>
+          </div>
+          <div class="edu-item">
+            <div class="title">Web &amp; Mobile Application Development</div>
+            <div class="sub">Saylani Mass I.T Training (SMIT), Karachi</div>
+            <div class="date">2022 — 2023</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>
