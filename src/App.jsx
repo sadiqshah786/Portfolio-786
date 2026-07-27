@@ -14,6 +14,11 @@ import Footer from './components/Footer'
 import ThemePicker from './components/ThemePicker'
 import ProjectsPage from './pages/ProjectsPage'
 import ProjectDetail from './pages/ProjectDetail'
+import Landing from './pages/Landing'
+import Build from './pages/Build'
+import Editor from './pages/Editor'
+import FirebaseSetup from './pages/FirebaseSetup'
+import GeneratedPortfolio from './pages/GeneratedPortfolio'
 
 function Home() {
   return (
@@ -48,9 +53,15 @@ export default function App() {
       <ScrollManager />
       <ThemePicker />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/sadiq" element={<Home />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
+        <Route path="/build" element={<Build />} />
+        <Route path="/editor" element={<Editor />} />
+        <Route path="/setup" element={<FirebaseSetup />} />
+        <Route path="/me" element={<GeneratedPortfolio />} />
+        <Route path="/p/:id" element={<GeneratedPortfolio />} />
       </Routes>
     </>
   )

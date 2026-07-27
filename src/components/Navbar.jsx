@@ -17,12 +17,13 @@ export default function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Scroll to a section — navigate home first if we're on another route.
+  // Scroll to a section — navigate to the portfolio home first if elsewhere.
+  const HOME = '/sadiq'
   const goSection = (id) => (e) => {
     e.preventDefault()
     setOpen(false)
-    if (location.pathname !== '/') {
-      navigate('/')
+    if (location.pathname !== HOME) {
+      navigate(HOME)
       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 60)
     } else {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -32,7 +33,7 @@ export default function Navbar() {
   return (
     <nav>
       <div className="wrap nav-inner">
-        <Link to="/" className="brand" onClick={() => setOpen(false)}>
+        <Link to="/sadiq" className="brand" onClick={() => setOpen(false)}>
           <Brand />
         </Link>
 
@@ -44,6 +45,9 @@ export default function Navbar() {
           ))}
           <Link to="/projects" onClick={() => setOpen(false)}>
             Projects
+          </Link>
+          <Link to="/build" onClick={() => setOpen(false)} style={{ color: 'var(--teal)' }}>
+            Build Yours
           </Link>
           <a href={profile.cv} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="nav-cv">
             <Icon name="file" size={14} /> View CV
