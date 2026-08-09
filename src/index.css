@@ -13,9 +13,24 @@
   --purple: #7b61ff;
   --yellow: #ffcb52;
   --maxw: 1120px;
-  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Poppins', system-ui, sans-serif;
   --font-heading: 'Press Start 2P', monospace;
 }
+
+/* Global light mode — flips the neutral (non-accent) colours app-wide */
+:root[data-mode="light"] {
+  --bg: #ffffff;
+  --bg-2: #f4f4f8;
+  --panel: #ffffff;
+  --panel-2: #f1f1f6;
+  --border: #ececf2;
+  --border-2: #dfdfe8;
+  --text: #16161f;
+  --muted: #5f5f74;
+}
+:root[data-mode="light"] nav { background: rgba(255,255,255,0.85); border-bottom-color: var(--border); }
+:root[data-mode="light"] .gen-bar, :root[data-mode="light"] .tpl-switch, :root[data-mode="light"] .stepbar { background: var(--bg-2); }
+:root[data-mode="light"] .code-mock { border-color: var(--border-2); }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -868,6 +883,10 @@ footer .copy { font-family: 'Space Mono', monospace; color: var(--muted); font-s
 .palette.open .palette-panel { opacity: 1; transform: none; pointer-events: auto; }
 .palette-panel { width: 216px; max-height: calc(100vh - 120px); overflow-y: auto; }
 .palette-title { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
+.mode-list { display: flex; gap: 8px; }
+.mode-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--border-2); background: var(--panel-2); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 12px; padding: 9px 0; border-radius: 8px; cursor: pointer; transition: all .18s; }
+.mode-btn:hover { color: var(--text); border-color: var(--text); }
+.mode-btn.sel { border-color: var(--pink); color: var(--text); background: rgba(238,79,139,0.12); }
 .palette-title:not(:first-child) { margin-top: 20px; }
 .palette-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .swatch {

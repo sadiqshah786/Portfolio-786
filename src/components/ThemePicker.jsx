@@ -7,6 +7,7 @@ const KEYS = {
   heading: 'portfolio-heading-font',
   font: 'portfolio-font',
   size: 'portfolio-size',
+  mode: 'app-mode',
 }
 
 function applyPalette(p) {
@@ -21,8 +22,14 @@ export default function ThemePicker() {
   const [open, setOpen] = useState(false)
   const [palette, setPalette] = useState(() => localStorage.getItem(KEYS.palette) || palettes[0].id)
   const [heading, setHeading] = useState(() => localStorage.getItem(KEYS.heading) || headingFonts[0].id)
-  const [font, setFont] = useState(() => localStorage.getItem(KEYS.font) || fonts[0].id)
+  const [font, setFont] = useState(() => localStorage.getItem(KEYS.font) || 'poppins')
   const [size, setSize] = useState(() => localStorage.getItem(KEYS.size) || 'md')
+  const [mode, setMode] = useState(() => localStorage.getItem(KEYS.mode) || 'dark')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-mode', mode)
+    localStorage.setItem(KEYS.mode, mode)
+  }, [mode])
 
   useEffect(() => {
     const p = palettes.find((x) => x.id === palette) || palettes[0]
@@ -51,6 +58,16 @@ export default function ThemePicker() {
   return (
     <div className={`palette ${open ? 'open' : ''}`}>
       <div className="palette-panel">
+        <div className="palette-title">Appearance</div>
+        <div className="mode-list">
+          <button className={`mode-btn ${mode === 'dark' ? 'sel' : ''}`} onClick={() => setMode('dark')}>
+            <Icon name="moon" size={14} /> Dark
+          </button>
+          <button className={`mode-btn ${mode === 'light' ? 'sel' : ''}`} onClick={() => setMode('light')}>
+            <Icon name="sun" size={14} /> Light
+          </button>
+        </div>
+
         <div className="palette-title">Accent color</div>
         <div className="palette-grid">
           {palettes.map((p) => (
