@@ -43,12 +43,9 @@ export default function Dashboard() {
   }
 
   const actions = [
-    { label: 'Edit portfolio', desc: 'Update content, template & theme', icon: 'lock', btn: 'Edit', onClick: () => navigate('/editor') },
-    { label: 'Open live', desc: 'Your public portfolio page', icon: 'external', btn: 'Open', href: link },
     { label: 'Preview', desc: 'View it in the builder', icon: 'grid', btn: 'Preview', onClick: () => navigate('/me') },
     { label: 'Download CV', desc: 'Your CV as a PDF', icon: 'file', btn: 'Download', onClick: () => openHtmlInNewTab(buildCvHtml(data)) },
     { label: 'Export code', desc: 'Portfolio as a ZIP file', icon: 'external', btn: zipping ? 'Zipping…' : 'Export', onClick: doExport },
-    { label: 'Delete portfolio', desc: 'Remove it & free your URL', icon: 'close', btn: deleting ? 'Deleting…' : 'Delete', onClick: doDelete, danger: true },
   ]
 
   return (
