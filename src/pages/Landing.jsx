@@ -26,7 +26,7 @@ export default function Landing() {
         const existing = await getMyPortfolio(u)
         if (existing && existing.name) {
           saveProfile(existing)
-          navigate('/me')
+          navigate('/dashboard')
           return
         }
       } catch { /* fall through to build */ }

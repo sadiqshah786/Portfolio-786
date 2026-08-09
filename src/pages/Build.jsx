@@ -31,7 +31,7 @@ export default function Build() {
       .then((existing) => {
         if (existing && existing.name) {
           saveProfile(existing)
-          navigate('/editor', { replace: true })
+          navigate('/dashboard', { replace: true })
         } else {
           setChecking(false)
         }

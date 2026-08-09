@@ -18,6 +18,7 @@ import ProjectDetail from './pages/ProjectDetail'
 import Landing from './pages/Landing'
 import Build from './pages/Build'
 import Editor from './pages/Editor'
+import Dashboard from './pages/Dashboard'
 import GeneratedPortfolio from './pages/GeneratedPortfolio'
 
 function Home() {
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/build" element={<RequireAuth><Build /></RequireAuth>} />
+        <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/editor" element={<RequireAuth><Editor /></RequireAuth>} />
         <Route path="/me" element={<RequireAuth><GeneratedPortfolio /></RequireAuth>} />
         <Route path="/p/:id" element={<GeneratedPortfolio />} />
