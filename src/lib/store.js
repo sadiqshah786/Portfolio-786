@@ -7,6 +7,10 @@ export function saveProfile(profile) {
   localStorage.setItem(KEY, JSON.stringify(profile))
 }
 
+export function clearProfile() {
+  localStorage.removeItem(KEY)
+}
+
 export function loadProfile() {
   try {
     const raw = localStorage.getItem(KEY)
@@ -57,7 +61,7 @@ export function downloadJSON(profile, filename = 'portfolio.json') {
 // A blank profile so the editor works even without building first.
 export function emptyProfile() {
   return {
-    name: '', avatar: '', headline: '', location: '', email: '', phone: '', summary: '',
+    name: '', slug: '', avatar: '', headline: '', location: '', email: '', phone: '', summary: '',
     socials: { github: '', behance: '', linkedin: '', twitter: '', website: '' },
     stats: { repos: 0, followers: 0, experience: 0, skills: 0 },
     skills: [], languages: [], experience: [], education: [], projects: [],

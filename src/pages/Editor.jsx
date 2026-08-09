@@ -8,7 +8,7 @@ import { palettes } from '../data'
 import { TEMPLATES } from '../templates'
 import { loadProfile, saveProfile, emptyProfile } from '../lib/store'
 import { useAuth } from '../lib/auth'
-import { saveToCloud, publicUrl, getMyPortfolio } from '../lib/cloud'
+import { saveToCloud, publicUrl, getMyPortfolio, slugify } from '../lib/cloud'
 import { exportZip } from '../lib/exporters'
 
 /* ---------- small field helpers ---------- */
@@ -86,6 +86,7 @@ export default function Editor() {
     setPublishing(true)
     try {
       const id = await saveToCloud(user, p)
+      if (id !== p.slug) setP((x) => ({ ...x, slug: id }))
       const url = publicUrl(id)
       setPublishedUrl(url)
       await navigator.clipboard.writeText(url).catch(() => {})
@@ -153,6 +154,7 @@ export default function Editor() {
           <h2><span className="kick">01</span> Profile</h2>
           <div className="ed-grid">
             <Field label="Full name" value={p.name} onChange={(v) => set('name', v)} placeholder="Sadiq Shah" />
+            <Field label="Portfolio URL — /p/username" value={p.slug} onChange={(v) => set('slug', slugify(v))} placeholder="sadiq-shah" />
             <Field label="Headline" value={p.headline} onChange={(v) => set('headline', v)} placeholder="Software Engineer · React · Node" />
             <Field label="Location" value={p.location} onChange={(v) => set('location', v)} placeholder="Karachi, Pakistan" />
             <Field label="Avatar URL" value={p.avatar} onChange={(v) => set('avatar', v)} placeholder="https://…/photo.jpg" />

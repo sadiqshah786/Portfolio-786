@@ -16,8 +16,10 @@ export function buildProfile(github, linkedin, extra = {}) {
     stars: r.stars,
   }))
 
+  const name = gp.name || 'Your Name'
   return {
-    name: gp.name || 'Your Name',
+    name,
+    slug: slugify(name),
     avatar: gp.avatar || '',
     headline: li.headline || gp.bio || 'Developer',
     location: li.location || gp.location || '',
@@ -49,4 +51,8 @@ export function buildProfile(github, linkedin, extra = {}) {
 
 function uniq(arr) {
   return [...new Set(arr.map((s) => (s || '').trim()).filter(Boolean))]
+}
+
+function slugify(s) {
+  return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)
 }

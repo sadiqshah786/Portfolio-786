@@ -649,6 +649,7 @@ footer .copy { font-family: 'Space Mono', monospace; color: var(--muted); font-s
 .dash-tools { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid var(--border); }
 .dash-tool { display: inline-flex; align-items: center; gap: 7px; background: none; border: 1px solid var(--border-2); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 12px; padding: 9px 15px; border-radius: 999px; cursor: pointer; transition: all .18s; }
 .dash-tool:hover { border-color: var(--pink); color: var(--pink); }
+.dash-tool.danger:hover { border-color: #ff4d4d; color: #ff4d4d; }
 .dash-note { color: var(--muted); font-size: 12px; font-family: 'Space Mono', monospace; margin-top: 24px; }
 
 /* ============ PREVIEW TEMPLATE SWITCHER ============ */

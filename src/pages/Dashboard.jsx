@@ -4,8 +4,8 @@ import BuilderNav from '../components/BuilderNav'
 import Footer from '../components/Footer'
 import { Icon } from '../components/Icons'
 import { useAuth } from '../lib/auth'
-import { getMyPortfolio, publicUrl } from '../lib/cloud'
-import { saveProfile } from '../lib/store'
+import { getMyPortfolio, publicUrl, deleteMyPortfolio } from '../lib/cloud'
+import { saveProfile, clearProfile } from '../lib/store'
 import { buildCvHtml, openHtmlInNewTab, exportZip } from '../lib/exporters'
 
 export default function Dashboard() {
@@ -15,6 +15,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
   const [zipping, setZipping] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     if (!user || user.isDemo) { navigate('/build', { replace: true }); return }
@@ -32,10 +33,22 @@ export default function Dashboard() {
     )
   }
 
-  const link = publicUrl(user.uid)
+  const link = publicUrl(data.slug || data._id)
   const initials = (data.name || 'U').split(' ').map((w) => w[0]).slice(0, 2).join('')
   const copy = async () => { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 1800) }
   const doExport = async () => { setZipping(true); try { await exportZip(data) } finally { setZipping(false) } }
+  const doDelete = async () => {
+    if (!window.confirm('Delete your portfolio permanently? This removes it from the cloud and frees your URL. You can build a new one afterwards.')) return
+    setDeleting(true)
+    try {
+      await deleteMyPortfolio(user)
+      clearProfile()
+      navigate('/build', { replace: true })
+    } catch (e) {
+      alert(e.message || 'Could not delete')
+      setDeleting(false)
+    }
+  }
 
   return (
     <>
@@ -67,9 +80,10 @@ export default function Dashboard() {
           <div className="dash-tools">
             <button onClick={() => openHtmlInNewTab(buildCvHtml(data))} className="dash-tool"><Icon name="file" size={14} /> Download CV</button>
             <button onClick={doExport} className="dash-tool" disabled={zipping}><Icon name="external" size={14} /> {zipping ? 'Zipping…' : 'Export ZIP'}</button>
+            <button onClick={doDelete} className="dash-tool danger" disabled={deleting}><Icon name="close" size={14} /> {deleting ? 'Deleting…' : 'Delete portfolio'}</button>
           </div>
 
-          <p className="dash-note">One account = one portfolio. You can edit it anytime — your link stays the same.</p>
+          <p className="dash-note">One account = one portfolio. Edit it anytime (your link stays the same), or delete it to build a new one.</p>
         </div>
       </section>
       <Footer />
