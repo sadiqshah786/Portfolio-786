@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BuilderNav from '../components/BuilderNav'
 import StepBar from '../components/StepBar'
@@ -8,15 +8,45 @@ import { fetchGithub } from '../lib/github'
 import { extractPdfLines } from '../lib/pdf'
 import { parseLinkedIn } from '../lib/linkedin'
 import { buildProfile } from '../lib/buildProfile'
+import { useAuth } from '../lib/auth'
+import { getMyPortfolio } from '../lib/cloud'
+import { saveProfile } from '../lib/store'
 
 export default function Build() {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const [checking, setChecking] = useState(true)
   const [githubInput, setGithubInput] = useState('')
   const [pdfFile, setPdfFile] = useState(null)
   const [dragOver, setDragOver] = useState(false)
   const [status, setStatus] = useState('idle') // idle | loading | done | error
   const [error, setError] = useState('')
   const [preview, setPreview] = useState(null)
+
+  // One account = one portfolio: if the user already has one, they can only
+  // edit it — send them to the editor instead of re-importing.
+  useEffect(() => {
+    if (!user || user.isDemo) { setChecking(false); return }
+    getMyPortfolio(user)
+      .then((existing) => {
+        if (existing && existing.name) {
+          saveProfile(existing)
+          navigate('/editor', { replace: true })
+        } else {
+          setChecking(false)
+        }
+      })
+      .catch(() => setChecking(false))
+  }, [user, navigate])
+
+  if (checking) {
+    return (
+      <div className="portfolio-loading">
+        <div className="pl-spinner" />
+        <p>Loading…</p>
+      </div>
+    )
+  }
 
   const onDrop = (e) => {
     e.preventDefault()
