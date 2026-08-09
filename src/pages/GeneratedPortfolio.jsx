@@ -54,19 +54,9 @@ export default function GeneratedPortfolio() {
     )
   }
 
-  const LIGHT = {
-    '--bg': '#ffffff', '--bg-2': '#f4f4f8', '--panel': '#ffffff', '--panel-2': '#f1f1f6',
-    '--border': '#ececf2', '--border-2': '#e0e0ea', '--text': '#1a1a22', '--muted': '#6a6a80',
-  }
   const themeVars = () => {
     const t = palettes.find((x) => x.id === (data?.theme || 'magenta')) || palettes[0]
-    const accent = { '--pink': t.pink, '--coral': t.coral, '--teal': t.teal, '--purple': t.purple }
-    return data?.mode === 'light' ? { ...accent, ...LIGHT } : accent
-  }
-  const changeMode = () => {
-    const next = { ...data, mode: data.mode === 'light' ? 'dark' : 'light' }
-    setData(next)
-    saveProfile(next)
+    return { '--pink': t.pink, '--coral': t.coral, '--teal': t.teal, '--purple': t.purple }
   }
   const changeTemplate = (id) => {
     const next = { ...data, template: id }
@@ -150,10 +140,6 @@ export default function GeneratedPortfolio() {
               {t.name}
             </button>
           ))}
-          <button className="tpl-mode" onClick={changeMode} title="Toggle light/dark">
-            <Icon name={data.mode === 'light' ? 'moon' : 'sun'} size={14} />
-            {data.mode === 'light' ? 'Dark' : 'Light'}
-          </button>
         </div>
       )}
 

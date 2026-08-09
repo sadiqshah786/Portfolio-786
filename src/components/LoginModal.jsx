@@ -13,8 +13,8 @@ export default function LoginModal({ open, onClose, onSuccess, title = 'Sign in 
     setErr('')
     setBusy(true)
     try {
-      await signInWithGoogle()
-      onSuccess?.()
+      const res = await signInWithGoogle()
+      onSuccess?.(res?.user)
     } catch (e) {
       setErr(e.message || 'Sign-in failed')
     } finally {

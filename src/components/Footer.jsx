@@ -1,15 +1,21 @@
-import Brand from './Brand'
+import { Icon } from "./Icons";
 
 export default function Footer() {
   return (
     <footer>
-      <div className="wrap">
-        <a href="#top" className="brand">
-          <Brand />
+      <div className="wrap footer-in">
+        <p className="footer-credit">
+          Developed by <b>Sadiq Shah</b>
+        </p>
+        <a
+          href="https://github.com/sadiqshah786"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer-gh"
+        >
+          <Icon name="github" size={16} /> github.com/sadiqshah786
         </a>
-        <p className="fpixel">&lt; BUILT WITH ♥ BY SADIQ SHAH /&gt;</p>
-        <p className="copy">© {new Date().getFullYear()} Sadiq Shah — Full Stack Developer</p>
       </div>
     </footer>
-  )
+  );
 }

@@ -5,6 +5,8 @@ import Footer from '../components/Footer'
 import LoginModal from '../components/LoginModal'
 import { Icon } from '../components/Icons'
 import { useAuth } from '../lib/auth'
+import { getMyPortfolio } from '../lib/cloud'
+import { saveProfile } from '../lib/store'
 
 const STEPS = [
   { n: '01', icon: 'github', title: 'Import', text: 'Paste your GitHub and drop your LinkedIn PDF. We fetch your repos, skills, experience and education automatically.' },
@@ -17,9 +19,24 @@ export default function Landing() {
   const navigate = useNavigate()
   const [showLogin, setShowLogin] = useState(false)
 
-  // Get started → sign in with Google, then go to the import step.
+  // If the user already has a portfolio → open it; otherwise start building.
+  const routeAfterLogin = async (u) => {
+    if (u && !u.isDemo) {
+      try {
+        const existing = await getMyPortfolio(u)
+        if (existing && existing.name) {
+          saveProfile(existing)
+          navigate('/me')
+          return
+        }
+      } catch { /* fall through to build */ }
+    }
+    navigate('/build')
+  }
+
+  // Get started → sign in with Google, then route to their portfolio or build.
   const start = () => {
-    if (user) navigate('/build')
+    if (user) routeAfterLogin(user)
     else setShowLogin(true)
   }
 
@@ -29,7 +46,7 @@ export default function Landing() {
       <LoginModal
         open={showLogin}
         onClose={() => setShowLogin(false)}
-        onSuccess={() => { setShowLogin(false); navigate('/build') }}
+        onSuccess={(u) => { setShowLogin(false); routeAfterLogin(u) }}
         title="Sign in to get started"
         subtitle="Log in with Google to build and save your portfolio."
       />
