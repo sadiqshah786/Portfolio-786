@@ -652,11 +652,15 @@ footer .copy { font-family: 'Space Mono', monospace; color: var(--muted); font-s
 .dash-table tr:last-child { border-bottom: 0; }
 .dash-table th { text-align: left; width: 160px; padding: 14px 18px; font-family: 'Space Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 400; vertical-align: middle; background: var(--panel-2); }
 .dash-table td { padding: 14px 18px; font-size: 14px; color: var(--text); word-break: break-word; }
-.dash-tlink { color: var(--teal); font-family: 'Space Mono', monospace; font-size: 13px; }
-.dash-tlink:hover { text-decoration: underline; }
-.dash-status { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); font-family: 'Space Mono', monospace; font-size: 13px; }
+.dash-act-ic { width: 52px; text-align: center; }
+.dash-act-ic span { width: 34px; height: 34px; border-radius: 9px; background: var(--panel-2); border: 1px solid var(--border-2); color: var(--teal); display: inline-grid; place-items: center; }
+.dash-act-ic span.danger { color: #ff4d4d; }
+.dash-act-label b { display: block; font-size: 15px; }
+.dash-act-label span { color: var(--muted); font-size: 12.5px; }
+.dash-act-btn { text-align: right; white-space: nowrap; }
+.dash-act-btn .btn { padding: 9px 18px; font-size: 12px; }
+.dash-table tr.row-danger { background: rgba(255,77,77,0.04); }
 
-.dash-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
 .btn-danger { background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; }
 .btn-danger:hover { background: rgba(255,77,77,0.1); }
 .dash-note { color: var(--muted); font-size: 12px; font-family: 'Space Mono', monospace; }

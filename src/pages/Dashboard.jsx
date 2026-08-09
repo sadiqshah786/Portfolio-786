@@ -7,7 +7,6 @@ import { useAuth } from '../lib/auth'
 import { getMyPortfolio, publicUrl, deleteMyPortfolio } from '../lib/cloud'
 import { saveProfile, clearProfile } from '../lib/store'
 import { buildCvHtml, openHtmlInNewTab, exportZip } from '../lib/exporters'
-import { getTemplate } from '../templates'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -43,14 +42,13 @@ export default function Dashboard() {
     catch (e) { alert(e.message || 'Could not delete'); setDeleting(false) }
   }
 
-  const rows = [
-    ['Name', data.name],
-    ['Headline', data.headline || '—'],
-    ['Template', getTemplate(data.template).name],
-    ['Skills', data.skills?.length || 0],
-    ['Projects', data.projects?.length || 0],
-    ['Experience', data.experience?.length || 0],
-    ['Status', <span className="dash-status" key="s"><Icon name="check" size={13} /> Published</span>],
+  const actions = [
+    { label: 'Edit portfolio', desc: 'Update content, template & theme', icon: 'lock', btn: 'Edit', onClick: () => navigate('/editor') },
+    { label: 'Open live', desc: 'Your public portfolio page', icon: 'external', btn: 'Open', href: link },
+    { label: 'Preview', desc: 'View it in the builder', icon: 'grid', btn: 'Preview', onClick: () => navigate('/me') },
+    { label: 'Download CV', desc: 'Your CV as a PDF', icon: 'file', btn: 'Download', onClick: () => openHtmlInNewTab(buildCvHtml(data)) },
+    { label: 'Export code', desc: 'Portfolio as a ZIP file', icon: 'external', btn: zipping ? 'Zipping…' : 'Export', onClick: doExport },
+    { label: 'Delete portfolio', desc: 'Remove it & free your URL', icon: 'close', btn: deleting ? 'Deleting…' : 'Delete', onClick: doDelete, danger: true },
   ]
 
   return (
@@ -75,28 +73,25 @@ export default function Dashboard() {
           <a href={link} target="_blank" rel="noopener noreferrer" className="dash-copy"><Icon name="external" size={15} /> Open</a>
         </div>
 
-        {/* Details table */}
+        {/* Actions table */}
         <div className="dash-table-wrap">
           <table className="dash-table">
             <tbody>
-              {rows.map(([k, v]) => (
-                <tr key={k}><th>{k}</th><td>{v}</td></tr>
+              {actions.map((a) => (
+                <tr key={a.label} className={a.danger ? 'row-danger' : ''}>
+                  <td className="dash-act-ic"><span className={a.danger ? 'danger' : ''}><Icon name={a.icon} size={16} /></span></td>
+                  <td className="dash-act-label"><b>{a.label}</b><span>{a.desc}</span></td>
+                  <td className="dash-act-btn">
+                    {a.href ? (
+                      <a href={a.href} target="_blank" rel="noopener noreferrer" className={`btn ${a.danger ? 'btn-danger' : 'btn-ghost'}`}>{a.btn}</a>
+                    ) : (
+                      <button onClick={a.onClick} disabled={deleting && a.danger} className={`btn ${a.danger ? 'btn-danger' : a.label === 'Edit portfolio' ? 'btn-primary' : 'btn-ghost'}`}>{a.btn}</button>
+                    )}
+                  </td>
+                </tr>
               ))}
-              <tr>
-                <th>Public URL</th>
-                <td><a href={link} target="_blank" rel="noopener noreferrer" className="dash-tlink">{link}</a></td>
-              </tr>
             </tbody>
           </table>
-        </div>
-
-        {/* Actions */}
-        <div className="dash-actions">
-          <Link to="/editor" className="btn btn-primary"><Icon name="lock" size={15} /> Edit</Link>
-          <Link to="/me" className="btn btn-ghost">Preview</Link>
-          <button onClick={() => openHtmlInNewTab(buildCvHtml(data))} className="btn btn-ghost"><Icon name="file" size={15} /> CV</button>
-          <button onClick={doExport} className="btn btn-ghost" disabled={zipping}>{zipping ? 'Zipping…' : 'Export ZIP'}</button>
-          <button onClick={doDelete} className="btn btn-danger" disabled={deleting}><Icon name="close" size={15} /> {deleting ? 'Deleting…' : 'Delete'}</button>
         </div>
 
         <p className="dash-note">One account = one portfolio. Edit anytime (URL stays the same) or delete to build a new one.</p>
