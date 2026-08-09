@@ -59,10 +59,16 @@ export default function Dashboard() {
           <div className="dash-avatar">
             {data.avatar ? <img src={data.avatar} alt={data.name} /> : <span>{initials}</span>}
           </div>
-          <div>
+          <div className="dash-head-info">
             <div className="dash-kick">// Welcome back</div>
             <h1>{data.name}</h1>
             <p className="dash-sub">Your portfolio is live. Manage it below.</p>
+          </div>
+          <div className="dash-head-actions">
+            <Link to="/editor" className="btn btn-primary"><Icon name="lock" size={15} /> Edit</Link>
+            <button onClick={doDelete} className="btn btn-danger" disabled={deleting}>
+              <Icon name="close" size={15} /> {deleting ? 'Deleting…' : 'Delete'}
+            </button>
           </div>
         </div>
 
