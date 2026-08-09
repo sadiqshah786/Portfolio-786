@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '../lib/auth'
 import { Icon } from './Icons'
 
@@ -37,14 +36,10 @@ export default function LoginModal({ open, onClose, onSuccess, title = 'Sign in 
           </button>
         ) : (
           <>
-            <Link to="/setup" className="modal-google" onClick={onClose}>
-              <Icon name="google" size={16} /> Set up Google login
-            </Link>
-            <div className="modal-or"><span>or</span></div>
+            <p className="modal-warn">Login is temporarily unavailable.</p>
             <button className="modal-demo" onClick={() => { signInDemo(); onSuccess?.() }}>
-              <Icon name="arrowRight" size={15} /> Continue as demo (no setup)
+              <Icon name="arrowRight" size={15} /> Continue as demo
             </button>
-            <p className="modal-hint">Demo lets you try the editor now. Set up Firebase for real Google login &amp; cloud publish.</p>
           </>
         )}
 

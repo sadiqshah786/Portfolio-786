@@ -1,5 +1,6 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useAuth } from './lib/auth'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -17,7 +18,6 @@ import ProjectDetail from './pages/ProjectDetail'
 import Landing from './pages/Landing'
 import Build from './pages/Build'
 import Editor from './pages/Editor'
-import FirebaseSetup from './pages/FirebaseSetup'
 import GeneratedPortfolio from './pages/GeneratedPortfolio'
 
 function Home() {
@@ -36,6 +36,14 @@ function Home() {
       <Footer />
     </>
   )
+}
+
+// Builder pages require a signed-in user — otherwise bounce to the landing page.
+function RequireAuth({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return <div className="page-loading">Loading…</div>
+  if (!user) return <Navigate to="/" replace />
+  return children
 }
 
 // Scroll to top on route change (but leave in-page hash scrolling alone).
@@ -57,10 +65,9 @@ export default function App() {
         <Route path="/sadiq" element={<Home />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="/build" element={<Build />} />
-        <Route path="/editor" element={<Editor />} />
-        <Route path="/setup" element={<FirebaseSetup />} />
-        <Route path="/me" element={<GeneratedPortfolio />} />
+        <Route path="/build" element={<RequireAuth><Build /></RequireAuth>} />
+        <Route path="/editor" element={<RequireAuth><Editor /></RequireAuth>} />
+        <Route path="/me" element={<RequireAuth><GeneratedPortfolio /></RequireAuth>} />
         <Route path="/p/:id" element={<GeneratedPortfolio />} />
       </Routes>
     </>

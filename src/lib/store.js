@@ -58,9 +58,9 @@ export function downloadJSON(profile, filename = 'portfolio.json') {
 export function emptyProfile() {
   return {
     name: '', avatar: '', headline: '', location: '', email: '', phone: '', summary: '',
-    socials: { github: '', linkedin: '', twitter: '', website: '' },
+    socials: { github: '', behance: '', linkedin: '', twitter: '', website: '' },
     stats: { repos: 0, followers: 0, experience: 0, skills: 0 },
     skills: [], languages: [], experience: [], education: [], projects: [],
-    theme: 'magenta',
+    theme: 'magenta', template: 'dev', mode: 'dark',
   }
 }

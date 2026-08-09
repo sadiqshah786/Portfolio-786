@@ -1,46 +1,41 @@
-import { doc, setDoc, getDoc, collection, query, where, orderBy, getDocs, serverTimestamp } from 'firebase/firestore'
+import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { db, isFirebaseConfigured } from './firebase'
 
 const COLLECTION = 'portfolios'
 
-function slug(str) {
-  return (str || 'portfolio')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 24) || 'portfolio'
-}
-function shortId() {
-  return Math.random().toString(36).slice(2, 8)
-}
-
-// Save/update a portfolio for the signed-in user. Returns the document id.
-export async function saveToCloud(user, profile, existingId) {
+// Each signed-in user gets ONE object in Firestore, keyed by their uid.
+// Saving again updates that same object. Returns the document id (= uid).
+export async function saveToCloud(user, profile) {
   if (!isFirebaseConfigured) throw new Error('Firebase is not configured')
   if (!user) throw new Error('Please sign in first')
-  const id = existingId || `${slug(profile.name)}-${shortId()}`
+  const id = user.uid
   await setDoc(
     doc(db, COLLECTION, id),
-    { ...profile, ownerId: user.uid, ownerName: user.displayName || '', updatedAt: serverTimestamp() },
+    {
+      ...profile,
+      ownerId: user.uid,
+      ownerName: user.displayName || '',
+      ownerEmail: user.email || '',
+      updatedAt: serverTimestamp(),
+    },
     { merge: true }
   )
   return id
 }
 
-// Public read of a portfolio by id.
+// Load the signed-in user's own saved object (or null if they haven't saved yet).
+export async function getMyPortfolio(user) {
+  if (!isFirebaseConfigured || !user) return null
+  const snap = await getDoc(doc(db, COLLECTION, user.uid))
+  return snap.exists() ? snap.data() : null
+}
+
+// Public read of any user's portfolio by id (= their uid).
 export async function getFromCloud(id) {
   if (!isFirebaseConfigured) throw new Error('Firebase is not configured')
   const snap = await getDoc(doc(db, COLLECTION, id))
   if (!snap.exists()) throw new Error('Portfolio not found')
   return snap.data()
-}
-
-// List the signed-in user's portfolios.
-export async function listMyPortfolios(user) {
-  if (!isFirebaseConfigured || !user) return []
-  const q = query(collection(db, COLLECTION), where('ownerId', '==', user.uid), orderBy('updatedAt', 'desc'))
-  const snap = await getDocs(q)
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }))
 }
 
 export function publicUrl(id) {

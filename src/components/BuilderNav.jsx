@@ -12,9 +12,6 @@ export default function BuilderNav() {
           <span className="builder-tag">Builder</span>
         </Link>
         <div className="nav-links">
-          <Link to="/editor">Editor</Link>
-          <Link to="/me">Preview</Link>
-          <Link to="/setup">Setup</Link>
           <Link to="/sadiq">Example</Link>
           <AuthButton />
         </div>

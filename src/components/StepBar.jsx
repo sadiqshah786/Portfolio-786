@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 
 const STEPS = [
   { label: 'Import', path: '/build' },
-  { label: 'Setup', path: '/setup' },
   { label: 'Customize', path: '/editor' },
   { label: 'Publish', path: '/me' },
 ]

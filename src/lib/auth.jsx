@@ -16,12 +16,19 @@ export function AuthProvider({ children }) {
       if (demo) setUser(JSON.parse(demo))
     } catch { /* ignore */ }
 
-    if (!isFirebaseConfigured) return
-    return onAuthStateChanged(auth, (u) => {
+    if (!isFirebaseConfigured) {
+      setLoading(false)
+      return
+    }
+    // Safety net: never hang on "loading" if auth is slow/unreachable.
+    const timer = setTimeout(() => setLoading(false), 4000)
+    const unsub = onAuthStateChanged(auth, (u) => {
+      clearTimeout(timer)
       if (u) setUser(u)
       else if (!localStorage.getItem(DEMO_KEY)) setUser(null)
       setLoading(false)
     })
+    return () => { clearTimeout(timer); unsub() }
   }, [])
 
   const signInWithGoogle = async () => {

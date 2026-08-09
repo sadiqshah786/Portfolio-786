@@ -42,6 +42,8 @@ export function buildProfile(github, linkedin, extra = {}) {
     education: li.education || [],
     projects,
     theme: 'magenta',
+    template: 'dev',
+    mode: 'dark',
   }
 }
 

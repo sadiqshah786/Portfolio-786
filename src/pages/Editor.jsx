@@ -5,9 +5,10 @@ import AuthButton from '../components/AuthButton'
 import LoginModal from '../components/LoginModal'
 import StepBar from '../components/StepBar'
 import { palettes } from '../data'
+import { TEMPLATES } from '../templates'
 import { loadProfile, saveProfile, emptyProfile } from '../lib/store'
 import { useAuth } from '../lib/auth'
-import { saveToCloud, publicUrl } from '../lib/cloud'
+import { saveToCloud, publicUrl, getMyPortfolio } from '../lib/cloud'
 import { exportZip } from '../lib/exporters'
 
 /* ---------- small field helpers ---------- */
@@ -80,13 +81,11 @@ export default function Editor() {
 
   const publish = async () => {
     setPublishErr('')
-    if (!configured) { setPublishErr('Firebase not configured yet — add keys in .env'); return }
+    if (!configured) { setPublishErr('Login is not available right now'); return }
     if (!user) { setPublishErr('Sign in with Google first (top-right)'); return }
     setPublishing(true)
     try {
-      const savedId = localStorage.getItem('cloud-id') || undefined
-      const id = await saveToCloud(user, p, savedId)
-      localStorage.setItem('cloud-id', id)
+      const id = await saveToCloud(user, p)
       const url = publicUrl(id)
       setPublishedUrl(url)
       await navigator.clipboard.writeText(url).catch(() => {})
@@ -96,6 +95,14 @@ export default function Editor() {
       setPublishing(false)
     }
   }
+
+  // When a real user signs in, load their saved object (unless local has edits).
+  useEffect(() => {
+    if (!configured || !user || user.isDemo) return
+    const local = loadProfile()
+    if (local && local.name) return
+    getMyPortfolio(user).then((cloud) => { if (cloud) setP({ ...emptyProfile(), ...cloud }) }).catch(() => {})
+  }, [user, configured])
 
   return (
     <div className="editor">
@@ -125,7 +132,7 @@ export default function Editor() {
         </div>
       </div>
 
-      <StepBar current={2} />
+      <StepBar current={1} />
 
       {(publishedUrl || publishErr) && (
         <div className={`ed-publish ${publishErr ? 'err' : ''}`}>
@@ -235,9 +242,27 @@ export default function Editor() {
           )}
         />
 
+        {/* TEMPLATE */}
+        <section className="ed-sec">
+          <h2><span className="kick">07</span> Template</h2>
+          <div className="ed-templates">
+            {TEMPLATES.map((t) => (
+              <button
+                key={t.id}
+                className={`ed-tpl ${p.template === t.id ? 'sel' : ''}`}
+                onClick={() => set('template', t.id)}
+              >
+                <span className={`ed-tpl-preview tp-${t.id}`} />
+                <b>{t.name}</b>
+                <span className="ed-tpl-desc">{t.desc}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
         {/* THEME */}
         <section className="ed-sec">
-          <h2><span className="kick">07</span> Theme</h2>
+          <h2><span className="kick">08</span> Theme</h2>
           <div className="ed-themes">
             {palettes.map((t) => (
               <button

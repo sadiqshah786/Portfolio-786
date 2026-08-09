@@ -1,18 +1,39 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import BuilderNav from '../components/BuilderNav'
 import Footer from '../components/Footer'
+import LoginModal from '../components/LoginModal'
 import { Icon } from '../components/Icons'
+import { useAuth } from '../lib/auth'
 
 const STEPS = [
   { n: '01', icon: 'github', title: 'Import', text: 'Paste your GitHub and drop your LinkedIn PDF. We fetch your repos, skills, experience and education automatically.' },
-  { n: '02', icon: 'lock', title: 'Customize', text: 'Sign in with Google, then edit every field, add projects, reorder sections and pick a color theme.' },
-  { n: '03', icon: 'external', title: 'Publish & Share', text: 'Publish to get a short public link, download your CV as PDF, or export the whole site as a ZIP.' },
+  { n: '02', icon: 'lock', title: 'Customize', text: 'Edit every field, add projects, reorder sections and pick a color theme — all saved to your account.' },
+  { n: '03', icon: 'external', title: 'Publish & Share', text: 'Publish to get a public link, download your CV as PDF, or export the whole site as a ZIP.' },
 ]
 
 export default function Landing() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const [showLogin, setShowLogin] = useState(false)
+
+  // Get started → sign in with Google, then go to the import step.
+  const start = () => {
+    if (user) navigate('/build')
+    else setShowLogin(true)
+  }
+
   return (
     <>
       <BuilderNav />
+      <LoginModal
+        open={showLogin}
+        onClose={() => setShowLogin(false)}
+        onSuccess={() => { setShowLogin(false); navigate('/build') }}
+        title="Sign in to get started"
+        subtitle="Log in with Google to build and save your portfolio."
+      />
+
       <header className="landing-hero">
         <div className="wrap">
           <span className="kick">// Portfolio Builder</span>
@@ -22,7 +43,7 @@ export default function Landing() {
             developer portfolio (plus a matching CV) for free.
           </p>
           <div className="hero-btns">
-            <Link to="/build" className="btn btn-primary">Get started <Icon name="arrowRight" size={15} /></Link>
+            <button onClick={start} className="btn btn-primary">Get started <Icon name="arrowRight" size={15} /></button>
             <Link to="/sadiq" className="btn btn-ghost">See a live example</Link>
           </div>
         </div>
@@ -42,7 +63,7 @@ export default function Landing() {
 
           <div className="landing-cta">
             <h2>Ready to build yours?</h2>
-            <Link to="/build" className="btn btn-primary">Start now <Icon name="arrowRight" size={15} /></Link>
+            <button onClick={start} className="btn btn-primary">Start now <Icon name="arrowRight" size={15} /></button>
           </div>
         </div>
       </section>

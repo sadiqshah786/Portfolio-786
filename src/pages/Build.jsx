@@ -12,7 +12,6 @@ import { buildProfile } from '../lib/buildProfile'
 export default function Build() {
   const navigate = useNavigate()
   const [githubInput, setGithubInput] = useState('')
-  const [linkedinUrl, setLinkedinUrl] = useState('')
   const [pdfFile, setPdfFile] = useState(null)
   const [dragOver, setDragOver] = useState(false)
   const [status, setStatus] = useState('idle') // idle | loading | done | error
@@ -29,8 +28,8 @@ export default function Build() {
 
   async function handleBuild() {
     setError('')
-    if (!githubInput.trim() && !pdfFile) {
-      setError('Add your GitHub username/URL or upload your LinkedIn PDF (at least one).')
+    if (!githubInput.trim()) {
+      setError('Please add your GitHub username or URL.')
       return
     }
     setStatus('loading')
@@ -46,7 +45,7 @@ export default function Build() {
         linkedin = parseLinkedIn(lines)
       }
 
-      const profile = buildProfile(github, linkedin, { linkedinUrl })
+      const profile = buildProfile(github, linkedin, {})
       localStorage.setItem('builder-profile', JSON.stringify(profile))
       setPreview(profile)
       setStatus('done')
@@ -66,7 +65,7 @@ export default function Build() {
           <h1>Build your portfolio<br />in seconds</h1>
           <p className="hero-desc">
             Drop your LinkedIn PDF and paste your GitHub — we fetch your experience, skills and
-            projects, then generate a portfolio like this one. No sign-up.
+            projects, then generate a portfolio like this one.
           </p>
         </div>
       </header>
@@ -77,7 +76,7 @@ export default function Build() {
             {/* GitHub */}
             <div className="build-card">
               <div className="build-num">01</div>
-              <h3><Icon name="github" size={18} /> GitHub</h3>
+              <h3><Icon name="github" size={18} /> GitHub <span className="req">*</span></h3>
               <p>Your public profile — powers projects, skills &amp; stats.</p>
               <input
                 className="build-input"
@@ -90,8 +89,14 @@ export default function Build() {
             {/* LinkedIn PDF */}
             <div className="build-card">
               <div className="build-num">02</div>
-              <h3><Icon name="file" size={18} /> LinkedIn PDF</h3>
-              <p>Profile → <b>More</b> → <b>Save to PDF</b>, then drop it here.</p>
+              <h3><Icon name="file" size={18} /> LinkedIn PDF <span className="opt">(optional)</span></h3>
+              <p>Export your LinkedIn profile as a PDF, then upload it here:</p>
+              <ol className="pdf-steps">
+                <li>Open <b>LinkedIn</b> → go to your <b>profile</b></li>
+                <li>Click the <b>More</b> button (<b>•••</b>) below your name</li>
+                <li>Choose <b>Save to PDF</b> — a file downloads</li>
+                <li>Upload that PDF below 👇</li>
+              </ol>
               <label
                 className={`dropzone ${dragOver ? 'over' : ''} ${pdfFile ? 'has' : ''}`}
                 onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
@@ -110,12 +115,6 @@ export default function Build() {
                   <span className="dz-hint"><Icon name="file" size={22} /> Drop PDF or click to browse</span>
                 )}
               </label>
-              <input
-                className="build-input"
-                placeholder="LinkedIn profile URL (optional)"
-                value={linkedinUrl}
-                onChange={(e) => setLinkedinUrl(e.target.value)}
-              />
             </div>
           </div>
 
