@@ -154,7 +154,7 @@ export default function Editor() {
           <h2><span className="kick">01</span> Profile</h2>
           <div className="ed-grid">
             <Field label="Full name" value={p.name} onChange={(v) => set('name', v)} placeholder="Sadiq Shah" />
-            <Field label="Portfolio URL — /p/username" value={p.slug} onChange={(v) => set('slug', slugify(v))} placeholder="sadiq-shah" />
+            <Field label="Portfolio URL — /p/username" value={p.slug} onChange={(v) => set('slug', slugify(v))} placeholder="portfolio-name" />
             <Field label="Headline" value={p.headline} onChange={(v) => set('headline', v)} placeholder="Software Engineer · React · Node" />
             <Field label="Location" value={p.location} onChange={(v) => set('location', v)} placeholder="Karachi, Pakistan" />
             <Field label="Avatar URL" value={p.avatar} onChange={(v) => set('avatar', v)} placeholder="https://…/photo.jpg" />
