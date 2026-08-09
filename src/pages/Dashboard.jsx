@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [copied, setCopied] = useState(false)
   const [zipping, setZipping] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [confirmDel, setConfirmDel] = useState(false)
 
   useEffect(() => {
     if (!user || user.isDemo) { navigate('/build', { replace: true }); return }
@@ -36,10 +37,9 @@ export default function Dashboard() {
   const copy = async () => { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 1800) }
   const doExport = async () => { setZipping(true); try { await exportZip(data) } finally { setZipping(false) } }
   const doDelete = async () => {
-    if (!window.confirm('Delete your portfolio permanently? This removes it from the cloud and frees your URL. You can build a new one afterwards.')) return
     setDeleting(true)
     try { await deleteMyPortfolio(user); clearProfile(); navigate('/build', { replace: true }) }
-    catch (e) { alert(e.message || 'Could not delete'); setDeleting(false) }
+    catch (e) { alert(e.message || 'Could not delete'); setDeleting(false); setConfirmDel(false) }
   }
 
   const actions = [
@@ -63,8 +63,8 @@ export default function Dashboard() {
           </div>
           <div className="dash-head-actions">
             <Link to="/editor" className="btn btn-primary"><Icon name="lock" size={15} /> Edit</Link>
-            <button onClick={doDelete} className="btn btn-danger" disabled={deleting}>
-              <Icon name="close" size={15} /> {deleting ? 'Deleting…' : 'Delete'}
+            <button onClick={() => setConfirmDel(true)} className="btn btn-danger">
+              <Icon name="close" size={15} /> Delete
             </button>
           </div>
         </div>
@@ -99,6 +99,24 @@ export default function Dashboard() {
 
         <p className="dash-note">One account = one portfolio. Edit anytime (URL stays the same) or delete to build a new one.</p>
       </section>
+
+      {confirmDel && (
+        <div className="modal-overlay" onClick={() => !deleting && setConfirmDel(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            {!deleting && <button className="modal-x" onClick={() => setConfirmDel(false)} aria-label="Close"><Icon name="close" size={18} /></button>}
+            <div className="modal-ic modal-ic-danger"><Icon name="close" size={26} /></div>
+            <h2>Delete portfolio?</h2>
+            <p>This permanently removes it from the cloud and frees your URL <b>/p/{data.slug || data._id}</b>. You can build a new one afterwards.</p>
+            <div className="confirm-actions">
+              <button className="btn btn-ghost" onClick={() => setConfirmDel(false)} disabled={deleting}>Cancel</button>
+              <button className="btn btn-danger" onClick={doDelete} disabled={deleting}>
+                {deleting ? 'Deleting…' : 'Yes, delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   )

@@ -666,6 +666,9 @@ footer .copy { font-family: 'Space Mono', monospace; color: var(--muted); font-s
 
 .btn-danger { background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; }
 .btn-danger:hover { background: rgba(255,77,77,0.1); }
+.modal-ic-danger { background: linear-gradient(135deg, #ff6b6b, #ff4d4d) !important; }
+.confirm-actions { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+.confirm-actions .btn { min-width: 120px; justify-content: center; }
 .dash-note { color: var(--muted); font-size: 12px; font-family: 'Space Mono', monospace; }
 
 /* ============ PREVIEW TEMPLATE SWITCHER ============ */

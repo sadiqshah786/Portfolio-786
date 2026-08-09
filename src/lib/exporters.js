@@ -24,30 +24,39 @@ export function buildCvHtml(p) {
     <div class="edu-item"><div class="jt">${esc(e.degree || e.school)}</div>
     ${e.school && e.degree ? `<div class="co">${esc(e.school)}</div>` : ''}
     <div class="date">${esc(e.period || '')}</div></div>`).join('')
+  const swatches = palettes
+    .map((pl) => `<button class="cv-sw" title="${pl.name}" style="background:linear-gradient(135deg,${pl.pink},${pl.coral})" onclick="cvTheme('${pl.pink}','${pl.purple}','${pl.coral}')"></button>`)
+    .join('')
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/><title>${esc(p.name)}-CV</title>
 <link href="${FONTS}" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+:root{--accent:${t.pink};--accent2:${t.purple};--accent3:${t.coral}}
 body{font-family:'Space Grotesk',sans-serif;background:#ececf2;color:#1a1a2e}
-.toolbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;background:#14143a;color:#fff;padding:12px 20px;font-family:'Space Mono',monospace;font-size:13px}
-.toolbar button{background:linear-gradient(100deg,${t.pink},${t.coral});color:#fff;border:0;padding:9px 16px;border-radius:8px;font-family:'Space Mono',monospace;font-weight:700;cursor:pointer}
+.toolbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:14px;background:#14143a;color:#fff;padding:12px 20px;font-family:'Space Mono',monospace;font-size:13px}
+.cv-tools{display:flex;align-items:center;gap:14px}
+.cv-colors{display:flex;gap:6px}
+.cv-sw{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.25);cursor:pointer;padding:0}
+.cv-sw:hover{border-color:#fff;transform:scale(1.12)}
+.toolbar button{background:linear-gradient(100deg,var(--accent),var(--accent3));color:#fff;border:0;padding:9px 16px;border-radius:8px;font-family:'Space Mono',monospace;font-weight:700;cursor:pointer}
 .page{width:100%;max-width:210mm;min-height:297mm;margin:20px auto;background:#fff;display:grid;grid-template-columns:34% 1fr;box-shadow:0 10px 40px rgba(0,0,0,.15)}
 aside{background:#14143a;color:#d8d8ec;padding:26px 22px}
-.avatar{width:100px;height:100px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;object-fit:cover;background:linear-gradient(135deg,${t.purple},${t.pink});color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:28px;border:3px solid rgba(255,255,255,.15)}
+.avatar{width:100px;height:100px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;object-fit:cover;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:28px;border:3px solid rgba(255,255,255,.15)}
 aside h1{font-size:22px;text-align:center}aside .role{text-align:center;color:#9494bd;font-family:'Space Mono',monospace;font-size:11px;margin-top:6px}
-.sec{margin-top:24px}.sec h2{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:${t.pink};border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:7px;margin-bottom:12px}
+.sec{margin-top:24px}.sec h2{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:7px;margin-bottom:12px}
 .row{font-size:12.5px;margin-bottom:9px;word-break:break-word}.lbl{color:#9494bd;font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;display:block}
 .tag{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#d8d8ec;padding:4px 9px;border-radius:5px;margin:0 5px 6px 0}
-main{padding:30px}.msec{margin-bottom:24px}.msec h2{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:${t.purple};margin-bottom:14px;display:flex;align-items:center;gap:10px}.msec h2::after{content:"";flex:1;height:1px;background:#e2e2ec}
+main{padding:30px}.msec{margin-bottom:24px}.msec h2{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:14px;display:flex;align-items:center;gap:10px}.msec h2::after{content:"";flex:1;height:1px;background:#e2e2ec}
 .summary{font-size:13.5px;color:#5a5a72}
-.job{margin-bottom:16px;position:relative;padding-left:18px}.job::before{content:"";position:absolute;left:0;top:6px;width:8px;height:8px;border-radius:50%;background:${t.pink}}
-.top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.jt{font-size:14px;font-weight:600}.date{font-family:'Space Mono',monospace;font-size:10.5px;color:${t.pink};white-space:nowrap}
+.job{margin-bottom:16px;position:relative;padding-left:18px}.job::before{content:"";position:absolute;left:0;top:6px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.jt{font-size:14px;font-weight:600}.date{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--accent);white-space:nowrap}
 .co{font-size:12px;color:#5a5a72;font-weight:500}.jd{font-size:12.5px;color:#5a5a72;margin-top:4px}.edu-item{margin-bottom:12px}
 @media print{body{background:#fff}.toolbar{display:none}.page{margin:0;box-shadow:none;min-height:296mm;grid-template-columns:68mm 1fr}@page{size:A4;margin:0}}
 </style></head><body>
-<div class="toolbar"><span>${esc(p.name)} — CV</span><button onclick="window.print()">⬇ Download / Print PDF</button></div>
+<div class="toolbar"><span>${esc(p.name)} — CV</span><div class="cv-tools"><div class="cv-colors">${swatches}</div><button onclick="window.print()">⬇ Download PDF</button></div></div>
+<script>function cvTheme(a,b,c){var r=document.documentElement.style;r.setProperty('--accent',a);r.setProperty('--accent2',b);r.setProperty('--accent3',c)}</script>
 <div class="page">
 <aside>
 ${p.avatar ? `<img class="avatar" src="${esc(p.avatar)}" alt="${esc(p.name)}"/>` : `<div class="avatar">${esc(initials)}</div>`}
@@ -90,7 +99,7 @@ export function buildPortfolioHtml(p) {
 <meta name="viewport" content="width=device-width, initial-scale=1"/><title>${esc(p.name)} — Portfolio</title>
 <link href="${FONTS}" rel="stylesheet"/>
 <style>
-:root{--pink:${t.pink};--coral:${t.coral};--teal:${t.teal};--purple:${t.purple}}
+:root{--pink:var(--accent);--coral:var(--accent3);--teal:${t.teal};--purple:var(--accent2)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0d0d24;color:#ececf8;font-family:'Space Grotesk',sans-serif;line-height:1.65}
 .wrap{max-width:900px;margin:0 auto;padding:0 24px}
