@@ -7,6 +7,7 @@ import { useAuth } from '../lib/auth'
 import { getMyPortfolio, publicUrl, deleteMyPortfolio } from '../lib/cloud'
 import { saveProfile, clearProfile } from '../lib/store'
 import { buildCvHtml, openHtmlInNewTab, exportZip } from '../lib/exporters'
+import { getTemplate } from '../templates'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -28,9 +29,7 @@ export default function Dashboard() {
   }, [user, navigate])
 
   if (loading) {
-    return (
-      <div className="portfolio-loading"><div className="pl-spinner" /><p>Loading your portfolio…</p></div>
-    )
+    return <div className="portfolio-loading"><div className="pl-spinner" /><p>Loading your portfolio…</p></div>
   }
 
   const link = publicUrl(data.slug || data._id)
@@ -40,51 +39,67 @@ export default function Dashboard() {
   const doDelete = async () => {
     if (!window.confirm('Delete your portfolio permanently? This removes it from the cloud and frees your URL. You can build a new one afterwards.')) return
     setDeleting(true)
-    try {
-      await deleteMyPortfolio(user)
-      clearProfile()
-      navigate('/build', { replace: true })
-    } catch (e) {
-      alert(e.message || 'Could not delete')
-      setDeleting(false)
-    }
+    try { await deleteMyPortfolio(user); clearProfile(); navigate('/build', { replace: true }) }
+    catch (e) { alert(e.message || 'Could not delete'); setDeleting(false) }
   }
+
+  const rows = [
+    ['Name', data.name],
+    ['Headline', data.headline || '—'],
+    ['Template', getTemplate(data.template).name],
+    ['Skills', data.skills?.length || 0],
+    ['Projects', data.projects?.length || 0],
+    ['Experience', data.experience?.length || 0],
+    ['Status', <span className="dash-status" key="s"><Icon name="check" size={13} /> Published</span>],
+  ]
 
   return (
     <>
       <BuilderNav />
       <section className="wrap dash">
-        <div className="dash-card">
+        <div className="dash-head">
           <div className="dash-avatar">
             {data.avatar ? <img src={data.avatar} alt={data.name} /> : <span>{initials}</span>}
           </div>
-          <div className="dash-kick">// Welcome back</div>
-          <h1>{data.name}</h1>
-          <p className="dash-sub">Your portfolio is live 🎉 — here's your public link.</p>
-
-          <div className="dash-link">
-            <span className="dash-url">{link}</span>
-            <button onClick={copy} className="dash-copy">
-              <Icon name={copied ? 'check' : 'external'} size={15} /> {copied ? 'Copied!' : 'Copy'}
-            </button>
+          <div>
+            <div className="dash-kick">// Welcome back</div>
+            <h1>{data.name}</h1>
+            <p className="dash-sub">Your portfolio is live. Manage it below.</p>
           </div>
-
-          <div className="dash-actions">
-            <a href={link} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-              Open portfolio <Icon name="external" size={15} />
-            </a>
-            <Link to="/editor" className="btn btn-ghost"><Icon name="lock" size={15} /> Edit portfolio</Link>
-            <Link to="/me" className="btn btn-ghost">Preview</Link>
-          </div>
-
-          <div className="dash-tools">
-            <button onClick={() => openHtmlInNewTab(buildCvHtml(data))} className="dash-tool"><Icon name="file" size={14} /> Download CV</button>
-            <button onClick={doExport} className="dash-tool" disabled={zipping}><Icon name="external" size={14} /> {zipping ? 'Zipping…' : 'Export ZIP'}</button>
-            <button onClick={doDelete} className="dash-tool danger" disabled={deleting}><Icon name="close" size={14} /> {deleting ? 'Deleting…' : 'Delete portfolio'}</button>
-          </div>
-
-          <p className="dash-note">One account = one portfolio. Edit it anytime (your link stays the same), or delete it to build a new one.</p>
         </div>
+
+        {/* URL bar */}
+        <div className="dash-link">
+          <span className="dash-url">{link}</span>
+          <button onClick={copy} className="dash-copy"><Icon name={copied ? 'check' : 'external'} size={15} /> {copied ? 'Copied!' : 'Copy'}</button>
+          <a href={link} target="_blank" rel="noopener noreferrer" className="dash-copy"><Icon name="external" size={15} /> Open</a>
+        </div>
+
+        {/* Details table */}
+        <div className="dash-table-wrap">
+          <table className="dash-table">
+            <tbody>
+              {rows.map(([k, v]) => (
+                <tr key={k}><th>{k}</th><td>{v}</td></tr>
+              ))}
+              <tr>
+                <th>Public URL</th>
+                <td><a href={link} target="_blank" rel="noopener noreferrer" className="dash-tlink">{link}</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Actions */}
+        <div className="dash-actions">
+          <Link to="/editor" className="btn btn-primary"><Icon name="lock" size={15} /> Edit</Link>
+          <Link to="/me" className="btn btn-ghost">Preview</Link>
+          <button onClick={() => openHtmlInNewTab(buildCvHtml(data))} className="btn btn-ghost"><Icon name="file" size={15} /> CV</button>
+          <button onClick={doExport} className="btn btn-ghost" disabled={zipping}>{zipping ? 'Zipping…' : 'Export ZIP'}</button>
+          <button onClick={doDelete} className="btn btn-danger" disabled={deleting}><Icon name="close" size={15} /> {deleting ? 'Deleting…' : 'Delete'}</button>
+        </div>
+
+        <p className="dash-note">One account = one portfolio. Edit anytime (URL stays the same) or delete to build a new one.</p>
       </section>
       <Footer />
     </>
