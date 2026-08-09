@@ -19,11 +19,15 @@ export default function GeneratedPortfolio() {
   const [publishing, setPublishing] = useState(false)
   const [publishMsg, setPublishMsg] = useState('')
   const [zipping, setZipping] = useState(false)
+  const [loadingCloud, setLoadingCloud] = useState(!!id)
 
   useEffect(() => {
     if (id) {
       setShared(true)
-      getFromCloud(id).then(setData).catch(() => setNotFound(true))
+      setLoadingCloud(true)
+      getFromCloud(id)
+        .then((d) => { setData(d); setLoadingCloud(false) })
+        .catch(() => { setNotFound(true); setLoadingCloud(false) })
       return
     }
     const fromUrl = readSharedProfile()
@@ -31,6 +35,15 @@ export default function GeneratedPortfolio() {
     const local = loadProfile()
     if (local) setData(local)
   }, [id])
+
+  if (loadingCloud) {
+    return (
+      <div className="portfolio-loading">
+        <div className="pl-spinner" />
+        <p>Loading portfolio…</p>
+      </div>
+    )
+  }
 
   if (notFound) {
     return (
