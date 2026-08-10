@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import { useAuth } from './lib/auth'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -72,6 +73,7 @@ export default function App() {
         <Route path="/me" element={<RequireAuth><GeneratedPortfolio /></RequireAuth>} />
         <Route path="/p/:id" element={<GeneratedPortfolio />} />
       </Routes>
+      <Analytics />
     </>
   )
 }
