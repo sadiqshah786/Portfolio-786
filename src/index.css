@@ -866,7 +866,8 @@ footer .copy { font-family: 'Space Mono', monospace; color: var(--muted); font-s
 .legacy-hidden { display: none; }
 
 /* ============ PALETTE PICKER ============ */
-.palette { position: fixed; right: 24px; bottom: 24px; z-index: 200; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+.palette { position: fixed; right: 24px; bottom: 24px; z-index: 200; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; pointer-events: none; }
+.palette-fab { pointer-events: auto; }
 .palette-fab {
   width: 52px; height: 52px; border-radius: 50%; border: 0; cursor: pointer;
   background: linear-gradient(135deg, var(--pink), var(--coral)); color: #fff;
