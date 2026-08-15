@@ -52,9 +52,9 @@ export const experience = [
     tech: ['WordPress', 'React', 'WooCommerce', 'Three.js'],
   },
   {
-    tag: '2025',
+    tag: '2025 — Present',
     title: 'Senior Software Executive · Sofcom',
-    desc: 'Promoted from React Developer (Jan 2025) to Senior Software Executive at Sofcom × Dax, building modern web applications with React, Next.js and TypeScript.',
+    desc: 'Currently a Senior Software Executive at Sofcom × Dax (promoted from React Developer), building modern web applications with React, Next.js and TypeScript.',
     tech: ['React', 'Next.js', 'TypeScript'],
   },
   {
