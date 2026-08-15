@@ -21,7 +21,7 @@ function applyPalette(p) {
 export default function ThemePicker() {
   const [open, setOpen] = useState(false)
   const [palette, setPalette] = useState(() => localStorage.getItem(KEYS.palette) || palettes[0].id)
-  const [heading, setHeading] = useState(() => localStorage.getItem(KEYS.heading) || headingFonts[0].id)
+  const [heading, setHeading] = useState(() => localStorage.getItem(KEYS.heading) || 'poppins')
   const [font, setFont] = useState(() => localStorage.getItem(KEYS.font) || 'poppins')
   const [size, setSize] = useState(() => localStorage.getItem(KEYS.size) || 'md')
   const [mode, setMode] = useState(() => localStorage.getItem(KEYS.mode) || 'dark')

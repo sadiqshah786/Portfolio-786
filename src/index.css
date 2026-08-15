@@ -14,7 +14,7 @@
   --yellow: #ffcb52;
   --maxw: 1120px;
   --font-body: 'Poppins', system-ui, sans-serif;
-  --font-heading: 'Press Start 2P', monospace;
+  --font-heading: 'Poppins', system-ui, sans-serif;
 }
 
 /* Global light mode — flips the neutral (non-accent) colours app-wide */
