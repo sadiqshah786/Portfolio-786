@@ -12,7 +12,6 @@ export default function BuilderNav() {
           <span className="pb-text">Portfolio<b>Builder</b></span>
         </Link>
         <div className="nav-links">
-          <Link to="/sadiq">Example</Link>
           <AuthButton />
         </div>
       </div>
